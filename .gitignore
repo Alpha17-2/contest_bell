@@ -46,3 +46,4 @@ app.*.map.json
 
 # Android signing keys
 key.properties
+upload-keystore.jks
