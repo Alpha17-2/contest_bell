@@ -48,8 +48,8 @@ class SplashScreen extends GetView<SplashController> {
                           ],
                         ),
                         child: Transform.rotate(
-                          angle: -12 * math.pi / 180, 
-                          child: Image.asset('assets/cup.png')
+                          angle: -12 * math.pi / 180,
+                          child: Image.asset('assets/cup.png'),
                         ),
                       ),
                     ),
@@ -80,23 +80,16 @@ class SplashScreen extends GetView<SplashController> {
 
               const SizedBox(height: 8),
 
-              // Tagline
-              AnimatedBuilder(
-                animation: controller.fadeAnimation,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: controller.fadeAnimation,
-                    child: const Text(
-                      'Contest Reminders',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF6B7280), // gray-500
-                      ),
-                    ),
-                  );
-                },
+              const Text(
+                'Be There When It Starts',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF6B7280), // gray-500
+                ),
               ),
+
+              // Tagline
             ],
           ),
         ),

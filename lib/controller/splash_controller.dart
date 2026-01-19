@@ -35,8 +35,8 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void startSplashFlow() {
-    // Navigate to main screen after 1 seconds
-    Future.delayed(const Duration(seconds: 1), () {
+    // Navigate to main screen after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
       navigateToMainScreen();
     });
   }
