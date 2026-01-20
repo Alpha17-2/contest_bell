@@ -1,19 +1,26 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val keystorePropertiesFile = rootProject.file("key.properties")
+val keystorePropertiesFile = project.file("../key.properties")
 val keystoreProperties = Properties()
+
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    println("✅ Loaded key.properties from: ${keystorePropertiesFile.absolutePath}")
+} else {
+    println("❌ key.properties NOT FOUND at: ${keystorePropertiesFile.absolutePath}")
+    throw GradleException("key.properties file not found!")
 }
 
 android {
     namespace = "com.example.contest_bell"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -26,13 +33,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.starcoding.contest_bell"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.example.contest_bell"
         minSdk = flutter.minSdkVersion
         targetSdk = 34
         versionCode = 1
-        versionName =  "1.0.0"
+        versionName = "1.0.0"
     }
 
     signingConfigs {
@@ -45,10 +50,11 @@ android {
     }
     
     buildTypes {
-        getByName("release") {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now,
+            // so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
-            isShrinkResources = true
         }
     }
 }
