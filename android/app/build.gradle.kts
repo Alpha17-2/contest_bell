@@ -19,7 +19,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.contest_bell"
+    namespace = "com.starcoding.contest_bell"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
@@ -33,10 +33,10 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.contest_bell"
+        applicationId = "com.starcoding.contest_bell"
         minSdk = flutter.minSdkVersion
         targetSdk = 34
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0.0"
     }
 
