@@ -1,5 +1,40 @@
-class Contest {
-    dynamic id;
+import 'dart:convert';
+
+CodeforcesContestListResponse contestFromJson(String str) => CodeforcesContestListResponse.fromJson(json.decode(str));
+
+String contestToJson(CodeforcesContestListResponse data) => json.encode(data.toJson());
+
+class CodeforcesContestListResponse {
+    String? status;
+    List<CodeforcesContest>? result;
+
+    CodeforcesContestListResponse({
+        this.status,
+        this.result,
+    });
+
+    CodeforcesContestListResponse copyWith({
+        String? status,
+        List<CodeforcesContest>? result,
+    }) => 
+        CodeforcesContestListResponse(
+            status: status ?? this.status,
+            result: result ?? this.result,
+        );
+
+    factory CodeforcesContestListResponse.fromJson(Map<String, dynamic> json) => CodeforcesContestListResponse(
+        status: json["status"],
+        result: json["result"] == null ? [] : List<CodeforcesContest>.from(json["result"]!.map((x) => CodeforcesContest.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "status": status,
+        "result": result == null ? [] : List<dynamic>.from(result!.map((x) => x.toJson())),
+    };
+}
+
+class CodeforcesContest {
+    int? id;
     String? name;
     Type? type;
     Phase? phase;
@@ -9,7 +44,7 @@ class Contest {
     int? relativeTimeSeconds;
     int? freezeDurationSeconds;
 
-    Contest({
+    CodeforcesContest({
         this.id,
         this.name,
         this.type,
@@ -21,7 +56,7 @@ class Contest {
         this.freezeDurationSeconds,
     });
 
-    Contest copyWith({
+    CodeforcesContest copyWith({
         int? id,
         String? name,
         Type? type,
@@ -32,7 +67,7 @@ class Contest {
         int? relativeTimeSeconds,
         int? freezeDurationSeconds,
     }) => 
-        Contest(
+        CodeforcesContest(
             id: id ?? this.id,
             name: name ?? this.name,
             type: type ?? this.type,
@@ -44,7 +79,7 @@ class Contest {
             freezeDurationSeconds: freezeDurationSeconds ?? this.freezeDurationSeconds,
         );
 
-    factory Contest.fromJson(Map<String, dynamic> json) => Contest(
+    factory CodeforcesContest.fromJson(Map<String, dynamic> json) => CodeforcesContest(
         id: json["id"],
         name: json["name"],
         type: typeValues.map[json["type"]],

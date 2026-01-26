@@ -37,7 +37,7 @@ class HomeScreen extends GetView<HomeController> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${homeController.contests.length} upcoming',
+                      '${homeController.allContests.length} upcoming',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Constants.lightIconColor,
@@ -61,7 +61,7 @@ class HomeScreen extends GetView<HomeController> {
                     );
                   }
 
-                  if (homeController.contests.isEmpty) {
+                  if (homeController.allContests.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -94,9 +94,9 @@ class HomeScreen extends GetView<HomeController> {
                   }
 
                   return ListView.builder(
-                    itemCount: homeController.contests.length,
+                    itemCount: homeController.allContests.length,
                     itemBuilder: (context, index) {
-                      final contest = homeController.contests[index];
+                      final contest = homeController.allContests[index];
                       return ContestCard(
                         contest: contest,
                         controller: homeController,
