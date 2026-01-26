@@ -82,8 +82,8 @@ class Result {
     factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
         name: json["name"],
-        type: typeValues.map[json["type"]]!,
-        phase: phaseValues.map[json["phase"]]!,
+        type: typeValues.map[json["type"]],
+        phase: phaseValues.map[json["phase"]],
         frozen: json["frozen"],
         durationSeconds: json["durationSeconds"],
         startTimeSeconds: json["startTimeSeconds"],
