@@ -8,6 +8,7 @@ class Contest {
     int? startTimeSeconds;
     int? relativeTimeSeconds;
     int? freezeDurationSeconds;
+    String? platform;
 
     Contest({
         this.id,
@@ -19,6 +20,7 @@ class Contest {
         this.startTimeSeconds,
         this.relativeTimeSeconds,
         this.freezeDurationSeconds,
+        this.platform = 'Codeforces',
     });
 
     Contest copyWith({
@@ -31,6 +33,7 @@ class Contest {
         int? startTimeSeconds,
         int? relativeTimeSeconds,
         int? freezeDurationSeconds,
+        String? platform,
     }) => 
         Contest(
             id: id ?? this.id,
@@ -41,6 +44,7 @@ class Contest {
             durationSeconds: durationSeconds ?? this.durationSeconds,
             startTimeSeconds: startTimeSeconds ?? this.startTimeSeconds,
             relativeTimeSeconds: relativeTimeSeconds ?? this.relativeTimeSeconds,
+            platform: platform ?? this.platform,
             freezeDurationSeconds: freezeDurationSeconds ?? this.freezeDurationSeconds,
         );
 

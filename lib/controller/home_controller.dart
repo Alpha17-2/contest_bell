@@ -20,12 +20,56 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await getCodeforcesContest();
-    await getCodechefContest();
-    combineContests();
+    isLoading.value = true;
+    try {
+      await getCodeforcesContest();
+      await getCodechefContest();
+      combineContests();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void combineContests() {
+    // Clear existing contests to avoid duplicates
+    allContests.clear();
+    
+    // Add Codeforces contests
+    for (var codeforcesContest in codeforcesContests) {
+      final Contest contest = Contest(
+        id: codeforcesContest.id,
+        name: codeforcesContest.name,
+        startTimeSeconds: codeforcesContest.startTimeSeconds,
+        durationSeconds: codeforcesContest.durationSeconds,
+        platform: 'Codeforces',
+      );
+      allContests.add(contest);
+    }
+    
+    // Add CodeChef contests
+    for (var codechefContest in codechefContests) {
+      //Convert ISO date → epoch seconds (UTC)
+      final DateTime startDate =
+          DateTime.parse(codechefContest.contestStartDateIso!);
+
+      final int startTimeSeconds =
+          startDate.toUtc().millisecondsSinceEpoch ~/ 1000;
+
+      //Convert duration (minutes → seconds)
+      final int durationSeconds =
+          int.parse(codechefContest.contestDuration!) * 60;
+
+      //Create normalized Contest (Codeforces-style)
+      final Contest contest = Contest(
+        id: codechefContest.contestCode, 
+        name: codechefContest.contestName,
+        startTimeSeconds: startTimeSeconds,
+        durationSeconds: durationSeconds,
+        platform: 'Codechef',
+      );
+      allContests.add(contest);
+    }
+    
     // Sort the combined contests by start time (earliest first)
     allContests.sort(
       (a, b) => (a.startTimeSeconds ?? 0)
@@ -36,29 +80,6 @@ class HomeController extends GetxController {
   Future<void> getCodechefContest() async {
     final contests = await codechefContestService.getAllUpcomingCodechefContests();
     codechefContests.value = contests;
-    for (var i = 0; i < contests.length; i++) {
-      final codechefContest = contests[i];
-      // 1️⃣ Convert ISO date → epoch seconds (UTC)
-  final DateTime startDate =
-      DateTime.parse(codechefContest.contestStartDateIso!);
-
-  final int startTimeSeconds =
-      startDate.toUtc().millisecondsSinceEpoch ~/ 1000;
-
-  // 2️⃣ Convert duration (minutes → seconds)
-  final int durationSeconds =
-      int.parse(codechefContest.contestDuration!) * 60;
-
-  // 3️⃣ Create normalized Contest (Codeforces-style)
-  final Contest contest = Contest(
-    id: codechefContest.contestCode?.hashCode, // or keep String id
-    name: codechefContest.contestName,
-    startTimeSeconds: startTimeSeconds,
-    durationSeconds: durationSeconds,
-  );
-    allContests.add(contest);
-    }
-
   }
 
   Future<void> getCodeforcesContest() async {
@@ -68,17 +89,6 @@ class HomeController extends GetxController {
         .where((contest) => contest.phase == cdfc.Phase.BEFORE)
         .toList();
     codeforcesContests.value = upcomingContests;
-    
-    // Convert Codeforces contests to Contest objects and add to allContests
-    for (var codeforcesContest in upcomingContests) {
-      final Contest contest = Contest(
-        id: codeforcesContest.id,
-        name: codeforcesContest.name,
-        startTimeSeconds: codeforcesContest.startTimeSeconds,
-        durationSeconds: codeforcesContest.durationSeconds,
-      );
-      allContests.add(contest);
-    }
   }
 
   // Helper method to get contest type display text
@@ -102,8 +112,7 @@ class HomeController extends GetxController {
     if (contest.name?.toLowerCase().contains('div. 4') == true) {
       return 'Div. 4';
     }
-
-    return 'Contest';
+    return 'Codechef';
   }
 
   // Helper method to get contest type color
@@ -137,12 +146,10 @@ class HomeController extends GetxController {
 
       final Event event = Event(
         title: contest.name ?? 'Codeforces Contest',
-        description:
-            'Codeforces ${getContestTypeText(contest)}\n'
-            'Contest ID: ${contest.id}\n'
-            'Duration: ${formatDuration(duration)}\n'
-            'Join the contest at: https://codeforces.com/contest/${contest.id}',
-        location: 'https://codeforces.com/contest/${contest.id}',
+        description: 'Coding Contest',
+        location: contest.platform == 'Codeforces'
+            ? 'https://codeforces.com/contest/${contest.id}'
+            : 'https://codechef.com/${contest.id}',
         startDate: startTime,
         endDate: endTime,
         iosParams: const IOSParams(reminder: Duration(minutes: 15)),
