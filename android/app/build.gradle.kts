@@ -36,8 +36,8 @@ android {
         applicationId = "com.starcoding.contest_bell"
         minSdk = flutter.minSdkVersion
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.0.0"
+        versionCode = 5
+        versionName = "1.5.0"
     }
 
     signingConfigs {
