@@ -36,7 +36,7 @@ android {
         applicationId = "com.starcoding.contest_bell"
         minSdk = flutter.minSdkVersion
         targetSdk = 35
-        versionCode = 5
+        versionCode = 6
         versionName = "1.5.0"
     }
 
