@@ -24,12 +24,12 @@ class CodeforcesContestService {
         
         return [];
       } else {
-        throw Exception('Failed to load Codeforces contests: ${response.statusCode}');
+        return [];
       }
     } catch (e) {
       // Handle errors
       print('Error fetching Codeforces contests: $e');
-      rethrow; // Re-throw to let caller handle the error
+      return [];
     }
   }
 }
